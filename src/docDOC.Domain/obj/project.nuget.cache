@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "rRISny4Pybk=",
+  "success": true,
+  "projectFilePath": "F:\\docDOC\\src\\docDOC.Domain\\docDOC.Domain.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\pc\\.nuget\\packages\\nettopologysuite\\2.6.0\\nettopologysuite.2.6.0.nupkg.sha512"
+  ],
+  "logs": []
+}
