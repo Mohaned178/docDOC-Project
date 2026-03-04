@@ -16,6 +16,17 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000", "https://yourfrontend.com") 
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials(); 
+    });
+});
+
 builder.Services.AddHangfire(config => config.UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddHangfireServer();
 
@@ -104,12 +115,16 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors("AllowFrontend");
 app.UseAuthentication();
 
 app.UseMiddleware<JwtRedisBlacklistMiddleware>();
 
 app.UseAuthorization();
-app.UseHangfireDashboard("/hangfire");
+app.UseHangfireDashboard("/hangfire", new DashboardOptions
+{
+    Authorization = new[] { new HangfireAuthorizationFilter() }
+});
 
 using (var scope = app.Services.CreateScope())
 {

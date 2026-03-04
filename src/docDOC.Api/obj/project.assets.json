@@ -4877,11 +4877,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\docDOC\\src\\docDOC.Api\\docDOC.Api.csproj",
+      "projectUniqueName": "f:\\docDOC\\src\\docDOC.Api\\docDOC.Api.csproj",
       "projectName": "docDOC.Api",
-      "projectPath": "F:\\docDOC\\src\\docDOC.Api\\docDOC.Api.csproj",
+      "projectPath": "f:\\docDOC\\src\\docDOC.Api\\docDOC.Api.csproj",
       "packagesPath": "C:\\Users\\pc\\.nuget\\packages\\",
-      "outputPath": "F:\\docDOC\\src\\docDOC.Api\\obj\\",
+      "outputPath": "f:\\docDOC\\src\\docDOC.Api\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -4903,8 +4903,8 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "projectReferences": {
-            "F:\\docDOC\\src\\docDOC.Infrastructure\\docDOC.Infrastructure.csproj": {
-              "projectPath": "F:\\docDOC\\src\\docDOC.Infrastructure\\docDOC.Infrastructure.csproj"
+            "f:\\docDOC\\src\\docDOC.Infrastructure\\docDOC.Infrastructure.csproj": {
+              "projectPath": "f:\\docDOC\\src\\docDOC.Infrastructure\\docDOC.Infrastructure.csproj"
             }
           }
         }

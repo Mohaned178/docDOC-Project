@@ -1,0 +1,16 @@
+f:\docDOC\src\docDOC.Application\bin\Debug\net10.0\docDOC.Application.deps.json
+f:\docDOC\src\docDOC.Application\bin\Debug\net10.0\docDOC.Application.dll
+f:\docDOC\src\docDOC.Application\bin\Debug\net10.0\docDOC.Application.pdb
+f:\docDOC\src\docDOC.Application\bin\Debug\net10.0\docDOC.Domain.dll
+f:\docDOC\src\docDOC.Application\bin\Debug\net10.0\docDOC.Domain.pdb
+f:\docDOC\src\docDOC.Application\obj\Debug\net10.0\docDOC.Application.csproj.AssemblyReference.cache
+f:\docDOC\src\docDOC.Application\obj\Debug\net10.0\docDOC.Application.GeneratedMSBuildEditorConfig.editorconfig
+f:\docDOC\src\docDOC.Application\obj\Debug\net10.0\docDOC.Application.AssemblyInfoInputs.cache
+f:\docDOC\src\docDOC.Application\obj\Debug\net10.0\docDOC.Application.AssemblyInfo.cs
+f:\docDOC\src\docDOC.Application\obj\Debug\net10.0\docDOC.Application.csproj.CoreCompileInputs.cache
+f:\docDOC\src\docDOC.Application\obj\Debug\net10.0\docDOC.Application.sourcelink.json
+f:\docDOC\src\docDOC.Application\obj\Debug\net10.0\docDOC.A.D995BAA4.Up2Date
+f:\docDOC\src\docDOC.Application\obj\Debug\net10.0\docDOC.Application.dll
+f:\docDOC\src\docDOC.Application\obj\Debug\net10.0\refint\docDOC.Application.dll
+f:\docDOC\src\docDOC.Application\obj\Debug\net10.0\docDOC.Application.pdb
+f:\docDOC\src\docDOC.Application\obj\Debug\net10.0\ref\docDOC.Application.dll

@@ -1,0 +1,13 @@
+f:\docDOC\src\docDOC.Domain\bin\Debug\net10.0\docDOC.Domain.deps.json
+f:\docDOC\src\docDOC.Domain\bin\Debug\net10.0\docDOC.Domain.dll
+f:\docDOC\src\docDOC.Domain\bin\Debug\net10.0\docDOC.Domain.pdb
+f:\docDOC\src\docDOC.Domain\obj\Debug\net10.0\docDOC.Domain.csproj.AssemblyReference.cache
+f:\docDOC\src\docDOC.Domain\obj\Debug\net10.0\docDOC.Domain.GeneratedMSBuildEditorConfig.editorconfig
+f:\docDOC\src\docDOC.Domain\obj\Debug\net10.0\docDOC.Domain.AssemblyInfoInputs.cache
+f:\docDOC\src\docDOC.Domain\obj\Debug\net10.0\docDOC.Domain.AssemblyInfo.cs
+f:\docDOC\src\docDOC.Domain\obj\Debug\net10.0\docDOC.Domain.csproj.CoreCompileInputs.cache
+f:\docDOC\src\docDOC.Domain\obj\Debug\net10.0\docDOC.Domain.sourcelink.json
+f:\docDOC\src\docDOC.Domain\obj\Debug\net10.0\docDOC.Domain.dll
+f:\docDOC\src\docDOC.Domain\obj\Debug\net10.0\refint\docDOC.Domain.dll
+f:\docDOC\src\docDOC.Domain\obj\Debug\net10.0\docDOC.Domain.pdb
+f:\docDOC\src\docDOC.Domain\obj\Debug\net10.0\ref\docDOC.Domain.dll

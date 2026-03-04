@@ -31,7 +31,11 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- [ ] **Architecture First**: Preserves Clean Architecture boundaries, CQRS, and UoW.
+- [ ] **Performance & Scalability**: Scalable horizontally with Redis; GEO/PostGIS appropriately used.
+- [ ] **Real-Time Communication**: Uses SignalR and Redis backplane for chat/notifications.
+- [ ] **Unified/Separated User**: Adheres to single-login endpoint but separated tables schema.
+- [ ] **Asynchronous Processing**: Uses Hangfire for relevant background tasks.
 
 ## Project Structure
 

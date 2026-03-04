@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "aoML0chHM/w=",
+  "dgSpecHash": "EOuVyJ1gc0o=",
   "success": true,
-  "projectFilePath": "F:\\docDOC\\src\\docDOC.Api\\docDOC.Api.csproj",
+  "projectFilePath": "f:\\docDOC\\src\\docDOC.Api\\docDOC.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pc\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\pc\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

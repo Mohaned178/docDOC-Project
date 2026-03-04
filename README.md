@@ -94,6 +94,50 @@ Visit `https://localhost:5001/swagger` to explore the API.
 
 ---
 
+## 🌐 API Endpoints
+
+### 🔐 Authentication (`/api/Auth`)
+
+- `POST /api/Auth/register` - Register a new user (Patient/Doctor).
+- `POST /api/Auth/login` - Authenticate and receive JWT tokens.
+- `POST /api/Auth/refresh-token` - Refresh expired access tokens.
+- `POST /api/Auth/logout` - Invalidate current session (Auth required).
+
+### 👨‍⚕️ Doctors (`/api/Doctors`)
+
+- `GET /api/Doctors/nearby` - Search for doctors by location and speciality (Patient only).
+- `GET /api/Doctors/{id}/availability` - Get available slots for a specific date (Patient only).
+- `PUT /api/Doctors/location` - Update doctor's GPS coordinates (Doctor only).
+
+### 📑 Specialities (`/api/Specialities`)
+
+- `GET /api/Specialities` - List all available medical specialities.
+
+### 📅 Appointments (`/api/Appointments`)
+
+- `POST /api/Appointments` - Book a consultation slot (Patient only).
+- `GET /api/Appointments/mine` - List currently logged-in user's appointments.
+- `PATCH /api/Appointments/{id}/status` - Update appointment status (Cancel/Complete).
+
+### 💬 Real-Time Chat (`/api/Chat`)
+
+- `POST /api/Chat` - Get or create a chat room for an appointment.
+- `GET /api/Chat` - List current user's active chat rooms.
+- `GET /api/Chat/{id}/messages` - Fetch message history with cursor-based pagination.
+- `PUT /api/Chat/{id}/messages/read` - Mark messages in a room as read.
+
+### 🔔 Notifications (`/api/Notifications`)
+
+- `GET /api/Notifications` - Fetch user notifications (with unread filter).
+- `PUT /api/Notifications/{id}/read` - Mark a specific notification as read.
+- `PUT /api/Notifications/read-all` - Mark all notifications as read.
+
+### ⭐ Reviews (`/api/Reviews`)
+
+- `POST /api/Reviews` - Submit a review and rating for a doctor (Patient only).
+
+---
+
 ## 🛡️ Best Practices & Quality
 
 - **Atomic Transactions**: Unit of Work pattern for reliable data updates.
@@ -108,5 +152,3 @@ Visit `https://localhost:5001/swagger` to explore the API.
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
-
-
