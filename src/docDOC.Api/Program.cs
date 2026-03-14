@@ -13,6 +13,8 @@ using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
 using Microsoft.AspNetCore.SignalR;
 using System.Reflection;
+using FastEndpoints;
+using FastEndpoints.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -86,7 +88,16 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddAuthorization();
-builder.Services.AddControllers();
+builder.Services.AddFastEndpoints();
+builder.Services.SwaggerDocument(o => 
+{
+    o.DocumentSettings = s =>
+    {
+        s.Title = "docDOC API";
+        s.Version = "v1";
+        s.Description = "Telemedicine Backend for docDOC";
+    };
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -135,7 +146,7 @@ using (var scope = app.Services.CreateScope())
         Cron.Daily);
 }
 
-app.MapControllers();
+app.UseFastEndpoints();
 
 app.MapHub<docDOC.Infrastructure.Hubs.ChatHub>("/hubs/chat");
 app.MapHub<docDOC.Infrastructure.Hubs.NotificationHub>("/hubs/notifications");
