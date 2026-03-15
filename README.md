@@ -10,6 +10,14 @@
 
 ---
 
+## 🌐 Live API & Demo
+
+The project is currently hosted on **Monster ASP.NET**. You can explore the live API and test the endpoints directly through the Swagger UI at the following link:
+
+👉 **[docDOC Live Swagger UI](http://docdoc.runasp.net/swagger/index.html)**
+
+---
+
 ## 🚀 Key Features
 
 - **⚡ FastEndpoints Powered**: Modern REPR (Request-Endpoint-Response) pattern for clean, maintainable, and highly performant API endpoints.
@@ -66,14 +74,16 @@
         "Audience": "docDOC"
       }
     }
-    ```
+```
 
 3.  **Run Migrations**
+
     ```bash
     dotnet ef database update --project src/docDOC.Infrastructure --startup-project src/docDOC.Api
     ```
 
 4.  **Start the Project**
+
     ```bash
     dotnet run --project src/docDOC.Api
     ```

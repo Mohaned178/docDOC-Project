@@ -21,10 +21,10 @@ public class ChatRoomRepository : BaseRepository<ChatRoom>, IChatRoomRepository
 
     public async Task<bool> HasQualifyingAppointmentAsync(int patientId, int doctorId, CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Appointments.AnyAsync(a => 
-            a.PatientId == patientId && 
-            a.DoctorId == doctorId && 
-            (a.Status == AppointmentStatus.Confirmed || a.Status == AppointmentStatus.Completed), 
+        return await _dbContext.Appointments.AnyAsync(a =>
+            a.PatientId == patientId &&
+            a.DoctorId == doctorId &&
+            (a.Status == AppointmentStatus.Confirmed || a.Status == AppointmentStatus.Completed),
             cancellationToken);
     }
 

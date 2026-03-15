@@ -25,6 +25,10 @@ public class GetNearbyDoctorsEndpoint : Endpoint<GetNearbyDoctorsRequest, GetNea
     {
         Get("api/doctors/nearby");
         Roles("Patient");
+        Summary(s => {
+            s.Summary = "Get nearby doctors";
+            s.Description = "Retrieves a list of doctors near the specified coordinates.";
+        });
     }
 
     public override async Task HandleAsync(GetNearbyDoctorsRequest req, CancellationToken ct)

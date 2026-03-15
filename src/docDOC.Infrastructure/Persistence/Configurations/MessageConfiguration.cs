@@ -11,16 +11,16 @@ public class MessageConfiguration : IEntityTypeConfiguration<Message>
     {
         builder.ToTable("Messages");
         builder.HasKey(m => m.Id);
-        
+
         builder.Property(m => m.Content).HasMaxLength(2000).IsRequired();
         builder.Property(m => m.SenderType).HasConversion<string>().IsRequired();
         builder.Property(m => m.Status).HasConversion<string>().HasDefaultValue(MessageStatus.Sent);
-        
+
         builder.HasOne(m => m.ChatRoom)
                .WithMany()
                .HasForeignKey(m => m.ChatRoomId)
                .OnDelete(DeleteBehavior.Cascade);
-               
+
         builder.HasIndex(m => new { m.ChatRoomId, m.SentAt });
         builder.HasIndex(m => new { m.ChatRoomId, m.Status })
                .HasFilter("[Status] != 'Read'");

@@ -1,20 +1,19 @@
-using System.Text;
-using docDOC.Api.Middleware;
+﻿using docDOC.Api.Middleware;
 using docDOC.Application;
 using docDOC.Application.Interfaces;
 using docDOC.Domain.Interfaces;
 using docDOC.Infrastructure.Persistence;
 using docDOC.Infrastructure.Persistence.Repositories;
 using docDOC.Infrastructure.Services;
+using FastEndpoints;
 using Hangfire;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
-using Microsoft.AspNetCore.SignalR;
 using System.Reflection;
-using FastEndpoints;
-using FastEndpoints.Swagger;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,10 +21,10 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:3000", "https://yourfrontend.com") 
+        policy.WithOrigins("http://localhost:3000", "https://yourfrontend.com")
               .AllowAnyHeader()
               .AllowAnyMethod()
-              .AllowCredentials(); 
+              .AllowCredentials();
     });
 });
 
@@ -33,18 +32,54 @@ builder.Services.AddHangfire(config => config.UseSqlServerStorage(builder.Config
 builder.Services.AddHangfireServer();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), 
-        o => o.UseNetTopologySuite()));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+        o =>
+        {
+            o.UseNetTopologySuite();
+            o.MigrationsAssembly("docDOC.Infrastructure");
+        }));
 
-var redisSection = builder.Configuration.GetConnectionString("Redis");
-builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisSection!));
-builder.Services.AddSingleton<IRedisService, RedisService>();
 
-var redisConnString = builder.Configuration.GetConnectionString("Redis") ?? "localhost:6379";
-builder.Services.AddSignalR()
-    .AddStackExchangeRedis(redisConnString, opts => {
+var redisConnString = builder.Configuration.GetConnectionString("Redis");
+var redisAvailable = false;
+
+if (!string.IsNullOrEmpty(redisConnString))
+{
+    try
+    {
+        var redisConfig = ConfigurationOptions.Parse(redisConnString);
+        redisConfig.AbortOnConnectFail = false;
+        var multiplexer = ConnectionMultiplexer.Connect(redisConfig);
+        builder.Services.AddSingleton<IConnectionMultiplexer>(multiplexer);
+        builder.Services.AddSingleton<IRedisService, RedisService>();
+        redisAvailable = true;
+        Console.WriteLine("✅ Redis connected successfully.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"⚠️ Redis unavailable, continuing without it: {ex.Message}");
+    }
+}
+else
+{
+    Console.WriteLine("⚠️ No Redis connection string found, continuing without Redis.");
+}
+
+
+var signalRBuilder = builder.Services.AddSignalR();
+if (redisAvailable && !string.IsNullOrEmpty(redisConnString))
+{
+    signalRBuilder.AddStackExchangeRedis(redisConnString, opts =>
+    {
         opts.Configuration.ChannelPrefix = "docDOC";
     });
+    Console.WriteLine("✅ SignalR Redis backplane enabled.");
+}
+else
+{
+    Console.WriteLine("⚠️ SignalR running without Redis backplane (single server mode).");
+}
+
 
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
@@ -89,26 +124,41 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 builder.Services.AddFastEndpoints();
-builder.Services.SwaggerDocument(o => 
-{
-    o.DocumentSettings = s =>
-    {
-        s.Title = "docDOC API";
-        s.Version = "v1";
-        s.Description = "Telemedicine Backend for docDOC";
-    };
-});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new()
+    c.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "docDOC API",
         Version = "v1",
-        Description = "Telemedicine Backend for docDOC"
+        Description = "Telemedicine Backend for docDOC - All Environments Enabled"
     });
 
-var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     if (File.Exists(xmlPath))
         c.IncludeXmlComments(xmlPath);
@@ -116,15 +166,35 @@ var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
 
 var app = builder.Build();
 
-app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-if (app.Environment.IsDevelopment())
+using (var scope = app.Services.CreateScope())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    var services = scope.ServiceProvider;
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    try
+    {
+        logger.LogInformation("Applying database migrations...");
+        var context = services.GetRequiredService<ApplicationDbContext>();
+        context.Database.Migrate();
+        logger.LogInformation("Database migration completed successfully.");
+    }
+    catch (Exception ex)
+    {
+        logger.LogCritical(ex, "FATAL ERROR: Database migration failed. The app will continue to start to allow for diagnostic access (Swagger).");
+    }
 }
 
-app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("v1/swagger.json", "docDOC API v1");
+    c.RoutePrefix = "swagger";
+});
+
+
 
 app.UseCors("AllowFrontend");
 app.UseAuthentication();
@@ -146,7 +216,18 @@ using (var scope = app.Services.CreateScope())
         Cron.Daily);
 }
 
-app.UseFastEndpoints();
+app.UseFastEndpoints(c =>
+{
+    c.Endpoints.Configurator = ep =>
+    {
+        var ns = ep.EndpointType.Namespace;
+        if (ns != null && ns.Contains("Features"))
+        {
+            var tag = ns.Split('.').Last();
+            ep.Description(b => b.WithTags(tag));
+        }
+    };
+});
 
 app.MapHub<docDOC.Infrastructure.Hubs.ChatHub>("/hubs/chat");
 app.MapHub<docDOC.Infrastructure.Hubs.NotificationHub>("/hubs/notifications");

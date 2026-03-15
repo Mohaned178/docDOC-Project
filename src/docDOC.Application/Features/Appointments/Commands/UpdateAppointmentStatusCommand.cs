@@ -73,7 +73,7 @@ public sealed class UpdateAppointmentStatusCommandHandler : IRequestHandler<Upda
             if (request.Status == AppointmentStatus.Confirmed)
             {
                 if (userTypeStr != "Doctor") throw new ForbiddenException("Only doctors can confirm appointments.");
-                
+
                 appointment.Status = AppointmentStatus.Confirmed;
                 _unitOfWork.Appointments.Update(appointment);
 
@@ -98,7 +98,7 @@ public sealed class UpdateAppointmentStatusCommandHandler : IRequestHandler<Upda
             if (request.Status == AppointmentStatus.Completed)
             {
                 if (userTypeStr != "Doctor") throw new ForbiddenException("Only doctors can complete appointments.");
-                
+
                 appointment.Status = AppointmentStatus.Completed;
                 _unitOfWork.Appointments.Update(appointment);
 
@@ -122,7 +122,7 @@ public sealed class UpdateAppointmentStatusCommandHandler : IRequestHandler<Upda
         {
             throw new DomainException("Invalid status transition.");
         }
-        
+
         _logger.LogInformation("Successfully updated appointment {Id} to {Status}", request.Id, request.Status);
 
         return new UpdateAppointmentStatusResponse(appointment.Id, appointment.Status);
@@ -141,7 +141,7 @@ public sealed class UpdateAppointmentStatusCommandHandler : IRequestHandler<Upda
 
         int notifyId = userTypeStr == "Patient" ? appointment.DoctorId : appointment.PatientId;
         UserType notifyType = userTypeStr == "Patient" ? UserType.Doctor : UserType.Patient;
-        
+
         await _notificationDispatcher.SendAsync(
             notifyId,
             notifyType,

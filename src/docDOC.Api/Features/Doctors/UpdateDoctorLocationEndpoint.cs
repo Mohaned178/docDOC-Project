@@ -17,6 +17,10 @@ public class UpdateDoctorLocationEndpoint : Endpoint<UpdateDoctorLocationCommand
     {
         Put("api/doctors/location");
         Roles("Doctor");
+        Summary(s => {
+            s.Summary = "Update doctor location";
+            s.Description = "Updates the current geographic coordinates of a doctor.";
+        });
     }
 
     public override async Task HandleAsync(UpdateDoctorLocationCommand req, CancellationToken ct)

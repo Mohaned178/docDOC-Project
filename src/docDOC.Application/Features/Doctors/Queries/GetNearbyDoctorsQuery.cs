@@ -1,13 +1,7 @@
 using docDOC.Application.Interfaces;
-using docDOC.Domain.Entities;
 using docDOC.Domain.Interfaces;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace docDOC.Application.Features.Doctors.Queries;
 
@@ -39,7 +33,7 @@ public sealed class GetNearbyDoctorsQueryHandler : IRequestHandler<GetNearbyDoct
 
     public async Task<GetNearbyDoctorsResponse> Handle(GetNearbyDoctorsQuery request, CancellationToken cancellationToken)
     {
-   
+
         var geoResults = await _redisService.GeoSearchAsync("doctors:geo", request.Longitude, request.Latitude, request.RadiusKm, 20);
 
         if (geoResults.Length > 0)
@@ -64,7 +58,7 @@ public sealed class GetNearbyDoctorsQueryHandler : IRequestHandler<GetNearbyDoct
             }
         }
 
-var cacheKey = $"nearby:cache:{request.Latitude}:{request.Longitude}:{request.RadiusKm}";
+        var cacheKey = $"nearby:cache:{request.Latitude}:{request.Longitude}:{request.RadiusKm}";
         var cachedNearby = await _redisService.GetAsync(cacheKey);
 
         List<DoctorDto> allNearbyDtos;
@@ -76,7 +70,7 @@ var cacheKey = $"nearby:cache:{request.Latitude}:{request.Longitude}:{request.Ra
         else
         {
             var dbDoctors = await _unitOfWork.Doctors.GetNearbyAsync(request.Latitude, request.Longitude, request.RadiusKm, null, cancellationToken);
-            
+
             allNearbyDtos = dbDoctors.Select(d => new DoctorDto(
                 d.Id,
                 d.FirstName,

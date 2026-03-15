@@ -34,7 +34,7 @@ public sealed class GetMyAppointmentsQueryHandler : IRequestHandler<GetMyAppoint
         if (userId == 0) throw new ForbiddenException("Not authenticated");
         var userType = _currentUserService.UserType;
 
-var pageSize = Math.Min(request.PageSize, 50);
+        var pageSize = Math.Min(request.PageSize, 50);
         var page = Math.Max(request.Page, 1);
 
         _logger.LogInformation("GetMyAppointmentsQuery: user {UserId} ({UserType}), status={Status}, page={Page}, pageSize={PageSize}",

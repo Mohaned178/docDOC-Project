@@ -13,11 +13,11 @@ public class AppointmentRepository : BaseRepository<Appointment>, IAppointmentRe
 
     public async Task<bool> IsSlotTakenAsync(int doctorId, DateOnly date, TimeOnly time, CancellationToken cancellationToken = default)
     {
-        return await _dbSet.AnyAsync(a => 
-            a.DoctorId == doctorId && 
-            a.Date == date && 
-            a.Time == time && 
-            a.Status != AppointmentStatus.Cancelled, 
+        return await _dbSet.AnyAsync(a =>
+            a.DoctorId == doctorId &&
+            a.Date == date &&
+            a.Time == time &&
+            a.Status != AppointmentStatus.Cancelled,
             cancellationToken);
     }
 

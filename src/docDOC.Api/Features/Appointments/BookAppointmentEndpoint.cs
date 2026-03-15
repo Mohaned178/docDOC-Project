@@ -15,14 +15,17 @@ public class BookAppointmentEndpoint : Endpoint<BookAppointmentCommand, object>
 
     public override void Configure()
     {
-        Post("api/appointments");
+        Post("api/appointments/book");
         Roles("Patient");
+        Summary(s => {
+            s.Summary = "Book a new appointment";
+            s.Description = "Allows a patient to book an appointment with a doctor.";
+        });
     }
 
     public override async Task HandleAsync(BookAppointmentCommand req, CancellationToken ct)
     {
         var response = await _mediator.Send(req, ct);
-        // CreatedAtAsync is typically handled by mapping the location header, but for now we can just send SendCreatedAtAsync or SendOkAsync
         await Send.CreatedAtAsync<GetMyAppointmentsEndpoint>(new { }, response, cancellation: ct);
 
     }

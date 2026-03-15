@@ -1,8 +1,6 @@
 using docDOC.Application.Features.Chat.Commands;
-using docDOC.Application.Features.Chat.Queries;
 using FastEndpoints;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 
 namespace docDOC.Api.Features.Chat;
 
@@ -18,7 +16,10 @@ public class CreateOrGetChatRoomEndpoint : Endpoint<CreateOrGetChatRoomCommand, 
     public override void Configure()
     {
         Post("api/chat");
-        // Authorized by default
+        Summary(s => {
+            s.Summary = "Create or get chat room";
+            s.Description = "Starts a new chat or retrieves an existing one between a patient and doctor.";
+        });
     }
 
     public override async Task HandleAsync(CreateOrGetChatRoomCommand req, CancellationToken ct)

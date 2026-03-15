@@ -19,7 +19,7 @@ public class RefreshTokenRepository : BaseRepository<RefreshToken>, IRefreshToke
     {
         var tokens = await _dbSet.Where(rt => rt.UserId == userId && !rt.IsRevoked)
                                  .ToListAsync(cancellationToken);
-                                 
+
         foreach (var token in tokens)
         {
             token.IsRevoked = true;

@@ -1,7 +1,6 @@
 using docDOC.Application.Features.Chat.Queries;
 using FastEndpoints;
 using MediatR;
-using System.Collections.Generic;
 
 namespace docDOC.Api.Features.Chat;
 
@@ -17,7 +16,10 @@ public class GetMyChatRoomsEndpoint : EndpointWithoutRequest<IEnumerable<ChatRoo
     public override void Configure()
     {
         Get("api/chat");
-        // Authorized by default
+        Summary(s => {
+            s.Summary = "Get my chat rooms";
+            s.Description = "Retrieves all chat rooms associated with the authenticated user.";
+        });
     }
 
     public override async Task HandleAsync(CancellationToken ct)

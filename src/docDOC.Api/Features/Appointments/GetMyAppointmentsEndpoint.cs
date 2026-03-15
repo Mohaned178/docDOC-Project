@@ -24,7 +24,10 @@ public class GetMyAppointmentsEndpoint : Endpoint<GetMyAppointmentsRequest, obje
     public override void Configure()
     {
         Get("api/appointments/mine");
-        // Authorized by default if we don't say AllowAnonymous(), but we can explicitly call Policies if needed or just leave it depending on global auth rules.
+        Summary(s => {
+            s.Summary = "Get current user's appointments";
+            s.Description = "Retrieves a list of appointments for the authenticated patient or doctor.";
+        });
     }
 
     public override async Task HandleAsync(GetMyAppointmentsRequest req, CancellationToken ct)

@@ -1,8 +1,8 @@
-using System.Reflection;
 using docDOC.Application.Behaviors;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace docDOC.Application;
 

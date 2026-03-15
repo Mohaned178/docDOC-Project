@@ -23,6 +23,10 @@ public class GetDoctorAvailabilityEndpoint : Endpoint<GetDoctorAvailabilityReque
     {
         Get("api/doctors/{id}/availability");
         Roles("Patient");
+        Summary(s => {
+            s.Summary = "Get doctor availability";
+            s.Description = "Retrieves available time slots for a specific doctor on a given date.";
+        });
     }
 
     public override async Task HandleAsync(GetDoctorAvailabilityRequest req, CancellationToken ct)

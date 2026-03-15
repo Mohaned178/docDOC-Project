@@ -1,9 +1,6 @@
 using docDOC.Domain.Entities;
 using docDOC.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace docDOC.Infrastructure.Persistence.Repositories;
 

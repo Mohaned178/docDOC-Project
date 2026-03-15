@@ -10,7 +10,7 @@ public class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
     {
         builder.ToTable("Doctors");
         builder.HasKey(d => d.Id);
-        
+
         builder.Property(d => d.Email).HasMaxLength(100).IsRequired();
         builder.Property(d => d.PasswordHash).HasMaxLength(200).IsRequired();
         builder.Property(d => d.FirstName).HasMaxLength(50).IsRequired();
@@ -20,7 +20,7 @@ public class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
         builder.Property(d => d.TotalReviews).HasDefaultValue(0);
         builder.Property(d => d.IsOnline).HasDefaultValue(false);
         builder.Property(d => d.Location).HasColumnType("geometry");
-        
+
         builder.HasOne(d => d.Speciality)
                .WithMany()
                .HasForeignKey(d => d.SpecialityId)

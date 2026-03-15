@@ -17,6 +17,10 @@ public class GetSpecialitiesEndpoint : EndpointWithoutRequest<object>
     {
         Get("api/specialities");
         AllowAnonymous();
+        Summary(s => {
+            s.Summary = "Get all specialities";
+            s.Description = "Retrieves a list of all medical specialities available in the system.";
+        });
     }
 
     public override async Task HandleAsync(CancellationToken ct)

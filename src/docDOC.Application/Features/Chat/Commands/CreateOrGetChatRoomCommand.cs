@@ -1,6 +1,5 @@
 using docDOC.Application.Interfaces;
 using docDOC.Domain.Entities;
-using docDOC.Domain.Enums;
 using docDOC.Domain.Exceptions;
 using docDOC.Domain.Interfaces;
 using MediatR;
@@ -31,7 +30,7 @@ public sealed class CreateOrGetChatRoomCommandHandler : IRequestHandler<CreateOr
         var currentUserId = _currentUserService.UserId;
         var currentUserType = _currentUserService.UserType;
 
-int patientId, doctorId;
+        int patientId, doctorId;
         if (currentUserType == "Patient")
         {
             patientId = currentUserId;
@@ -45,7 +44,7 @@ int patientId, doctorId;
 
         _logger.LogInformation("Attempting to create or get chat room for Patient {PatientId} and Doctor {DoctorId}", patientId, doctorId);
 
-var hasAppointment = await _unitOfWork.ChatRooms.HasQualifyingAppointmentAsync(patientId, doctorId, cancellationToken);
+        var hasAppointment = await _unitOfWork.ChatRooms.HasQualifyingAppointmentAsync(patientId, doctorId, cancellationToken);
         if (!hasAppointment)
         {
             _logger.LogWarning("Chat room creation rejected: No qualifying appointment between Patient {PatientId} and Doctor {DoctorId}", patientId, doctorId);
@@ -83,13 +82,13 @@ var hasAppointment = await _unitOfWork.ChatRooms.HasQualifyingAppointmentAsync(p
             isNew = true;
         }
 
-return new ChatRoomResult(
-            chatRoom.Id,
-            chatRoom.PatientId,
-            chatRoom.DoctorId,
-            chatRoom.IsActive,
-            chatRoom.CreatedAt,
-            isNew);
+        return new ChatRoomResult(
+                    chatRoom.Id,
+                    chatRoom.PatientId,
+                    chatRoom.DoctorId,
+                    chatRoom.IsActive,
+                    chatRoom.CreatedAt,
+                    isNew);
     }
 }
 

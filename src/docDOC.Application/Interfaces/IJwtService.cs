@@ -1,5 +1,3 @@
-using System.Security.Claims;
-
 namespace docDOC.Application.Interfaces;
 
 public interface IJwtService

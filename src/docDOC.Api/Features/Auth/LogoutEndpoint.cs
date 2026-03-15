@@ -16,7 +16,10 @@ public class LogoutEndpoint : EndpointWithoutRequest
     public override void Configure()
     {
         Post("api/auth/logout");
-        // Authorized by default
+        Summary(s => {
+            s.Summary = "User logout";
+            s.Description = "Invalidates the current user session.";
+        });
     }
 
     public override async Task HandleAsync(CancellationToken ct)

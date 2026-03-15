@@ -14,7 +14,7 @@ public class NotificationRepository : BaseRepository<Notification>, INotificatio
     public async Task<IEnumerable<Notification>> GetPagedAsync(int userId, bool unreadOnly, int page, int pageSize, CancellationToken cancellationToken = default)
     {
         var query = _dbSet.Where(n => n.UserId == userId);
-        
+
         if (unreadOnly)
         {
             query = query.Where(n => !n.IsRead);

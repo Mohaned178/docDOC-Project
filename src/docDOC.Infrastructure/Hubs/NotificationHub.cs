@@ -1,5 +1,4 @@
 using docDOC.Application.Interfaces;
-using docDOC.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
@@ -31,7 +30,7 @@ public sealed class NotificationHub : Hub
             var key = $"online:{userId}";
             await _redisService.SetAsync(key, "true", TimeSpan.FromSeconds(30));
             await Groups.AddToGroupAsync(Context.ConnectionId, userId.ToString());
-            
+
             _logger.LogInformation("User {UserId} connected and marked online", userId);
         }
 
@@ -45,14 +44,14 @@ public sealed class NotificationHub : Hub
         {
             await _redisService.RemoveAsync($"online:{userId}");
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, userId.ToString());
-            
+
             _logger.LogInformation("User {UserId} disconnected and marked offline", userId);
         }
 
         await base.OnDisconnectedAsync(exception);
     }
 
-public async Task Ping()
+    public async Task Ping()
     {
         var userId = _currentUserService.UserId;
         if (userId != 0)

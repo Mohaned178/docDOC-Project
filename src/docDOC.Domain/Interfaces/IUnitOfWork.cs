@@ -1,5 +1,3 @@
-using docDOC.Domain.Entities;
-
 namespace docDOC.Domain.Interfaces;
 
 public interface IUnitOfWork
@@ -13,7 +11,7 @@ public interface IUnitOfWork
     INotificationRepository Notifications { get; }
     IReviewRepository Reviews { get; }
     IRefreshTokenRepository RefreshTokens { get; }
-    
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     Task BeginTransactionAsync(CancellationToken cancellationToken = default);
     Task CommitTransactionAsync(CancellationToken cancellationToken = default);

@@ -21,6 +21,10 @@ public class MarkNotificationReadEndpoint : Endpoint<MarkNotificationReadRequest
     public override void Configure()
     {
         Put("api/notifications/{id}/read");
+        Summary(s => {
+            s.Summary = "Mark notification as read";
+            s.Description = "Marks a specific notification as read.";
+        });
     }
 
     public override async Task HandleAsync(MarkNotificationReadRequest req, CancellationToken ct)

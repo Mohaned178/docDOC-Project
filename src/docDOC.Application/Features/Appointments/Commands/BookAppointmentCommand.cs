@@ -1,4 +1,3 @@
-using System.Data.Common;
 using docDOC.Application.Interfaces;
 using docDOC.Domain.Entities;
 using docDOC.Domain.Enums;
@@ -38,20 +37,20 @@ public sealed class BookAppointmentCommandHandler : IRequestHandler<BookAppointm
 
     public async Task<BookAppointmentResponse> Handle(BookAppointmentCommand request, CancellationToken cancellationToken)
     {
-        
+
         if (request.Date.DayOfWeek == DayOfWeek.Sunday)
         {
             _logger.LogWarning("Booking failed: Sunday is not allowed.");
             throw new DomainException("Appointments cannot be booked on Sundays.");
         }
 
-if (request.Time.Minute != 0 && request.Time.Minute != 30)
+        if (request.Time.Minute != 0 && request.Time.Minute != 30)
         {
             _logger.LogWarning("Booking failed: Time must be on the hour or half-hour.");
             throw new DomainException("Time must be on the :00 or :30 minute mark.");
         }
 
-var startTime = new TimeOnly(8, 0);
+        var startTime = new TimeOnly(8, 0);
         var endTime = new TimeOnly(16, 30);
         if (request.Time < startTime || request.Time > endTime)
         {
@@ -61,11 +60,11 @@ var startTime = new TimeOnly(8, 0);
 
         var patientId = _currentUserService.UserId;
 
-await _unitOfWork.BeginTransactionAsync(cancellationToken);
-        
+        await _unitOfWork.BeginTransactionAsync(cancellationToken);
+
         try
         {
-            
+
             bool isTaken = await _unitOfWork.Appointments.IsSlotTakenAsync(request.DoctorId, request.Date, request.Time, cancellationToken);
             if (isTaken)
             {
@@ -85,26 +84,26 @@ await _unitOfWork.BeginTransactionAsync(cancellationToken);
 
             await _unitOfWork.Appointments.AddAsync(appointment, cancellationToken);
 
-try
+            try
             {
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
             }
-            catch (DbUpdateException ex) when (ex.InnerException is SqlException sqlEx && 
+            catch (DbUpdateException ex) when (ex.InnerException is SqlException sqlEx &&
                                              (sqlEx.Number == 2601 || sqlEx.Number == 2627))
             {
                 _logger.LogWarning(ex, "Booking failed: Database unique constraint hit for slot.");
                 throw new ConflictException("The selected time slot is already taken.");
             }
 
-var appointmentDateTime = request.Date.ToDateTime(request.Time);
+            var appointmentDateTime = request.Date.ToDateTime(request.Time);
             var triggerTime = new DateTimeOffset(appointmentDateTime, TimeSpan.Zero).AddHours(-24);
 
-var jobId = _jobScheduler.ScheduleAppointmentReminder(appointment.Id, triggerTime);
+            var jobId = _jobScheduler.ScheduleAppointmentReminder(appointment.Id, triggerTime);
             appointment.HangfireJobId = jobId;
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-await _unitOfWork.CommitTransactionAsync(cancellationToken);
+            await _unitOfWork.CommitTransactionAsync(cancellationToken);
 
             _logger.LogInformation("Successfully booked appointment {AppointmentId}", appointment.Id);
 

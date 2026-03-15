@@ -1,6 +1,4 @@
-using docDOC.Domain.Entities;
 using docDOC.Domain.Interfaces;
-using docDOC.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace docDOC.Infrastructure.Persistence.Repositories;

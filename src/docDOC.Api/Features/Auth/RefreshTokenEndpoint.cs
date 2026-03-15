@@ -17,6 +17,10 @@ public class RefreshTokenEndpoint : Endpoint<RefreshTokenCommand, object>
     {
         Post("api/auth/refresh-token");
         AllowAnonymous();
+        Summary(s => {
+            s.Summary = "Refresh JWT token";
+            s.Description = "Uses a valid refresh token to issue a new JWT access token.";
+        });
     }
 
     public override async Task HandleAsync(RefreshTokenCommand req, CancellationToken ct)

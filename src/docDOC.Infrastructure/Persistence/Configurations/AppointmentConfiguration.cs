@@ -10,11 +10,11 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
     {
         builder.ToTable("Appointments");
         builder.HasKey(a => a.Id);
-        
+
         builder.Property(a => a.Type).HasConversion<string>().IsRequired();
         builder.Property(a => a.Status).HasConversion<string>().IsRequired();
         builder.Property(a => a.HangfireJobId).HasMaxLength(100);
-        
+
         builder.HasOne(a => a.Patient)
                .WithMany()
                .HasForeignKey(a => a.PatientId)
@@ -24,11 +24,11 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
                .WithMany()
                .HasForeignKey(a => a.DoctorId)
                .OnDelete(DeleteBehavior.Restrict);
-        
+
         builder.HasIndex(a => new { a.DoctorId, a.Date, a.Time })
                .HasFilter("[Status] != 'Cancelled'")
                .IsUnique();
-               
+
         builder.HasIndex(a => a.PatientId);
         builder.HasIndex(a => a.DoctorId);
         builder.HasIndex(a => new { a.PatientId, a.Status });

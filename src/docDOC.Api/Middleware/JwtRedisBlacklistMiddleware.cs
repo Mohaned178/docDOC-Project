@@ -1,6 +1,5 @@
-using System.Security.Claims;
 using docDOC.Application.Interfaces;
-using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace docDOC.Api.Middleware;
 

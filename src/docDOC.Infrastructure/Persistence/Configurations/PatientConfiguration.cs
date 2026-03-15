@@ -10,13 +10,13 @@ public class PatientConfiguration : IEntityTypeConfiguration<Patient>
     {
         builder.ToTable("Patients");
         builder.HasKey(p => p.Id);
-        
+
         builder.Property(p => p.Email).HasMaxLength(100).IsRequired();
         builder.Property(p => p.PasswordHash).HasMaxLength(200).IsRequired();
         builder.Property(p => p.FirstName).HasMaxLength(50).IsRequired();
         builder.Property(p => p.LastName).HasMaxLength(50).IsRequired();
         builder.Property(p => p.Gender).HasConversion<string>();
-        
+
         builder.HasIndex(p => p.Email).IsUnique();
     }
 }

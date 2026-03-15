@@ -1,7 +1,6 @@
 using docDOC.Application.Interfaces;
 using docDOC.Domain.Enums;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 
 namespace docDOC.Infrastructure.Services;
 

@@ -1,3 +1,4 @@
+using docDOC.Application.Features.Chat.Queries;
 using docDOC.Application.Interfaces;
 using docDOC.Domain.Entities;
 using docDOC.Domain.Enums;
@@ -5,7 +6,6 @@ using docDOC.Domain.Exceptions;
 using docDOC.Domain.Interfaces;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using docDOC.Application.Features.Chat.Queries; 
 
 namespace docDOC.Application.Features.Chat.Commands;
 
@@ -54,7 +54,7 @@ public sealed class SendMessageCommandHandler : IRequestHandler<SendMessageComma
             throw new ForbiddenException("This chat room is closed.");
         }
 
-if (chatRoom.PatientId != senderId && chatRoom.DoctorId != senderId)
+        if (chatRoom.PatientId != senderId && chatRoom.DoctorId != senderId)
         {
             throw new ForbiddenException("You are not a participant in this chat room.");
         }
@@ -62,7 +62,7 @@ if (chatRoom.PatientId != senderId && chatRoom.DoctorId != senderId)
         var recipientId = chatRoom.PatientId == senderId ? chatRoom.DoctorId : chatRoom.PatientId;
         var recipientType = chatRoom.PatientId == senderId ? UserType.Doctor : UserType.Patient;
 
-var message = new Message
+        var message = new Message
         {
             ChatRoomId = chatRoom.Id,
             SenderId = senderId,
@@ -74,18 +74,18 @@ var message = new Message
 
         await _unitOfWork.Messages.AddAsync(message, cancellationToken);
 
-chatRoom.UpdatedAt = DateTimeOffset.UtcNow;
+        chatRoom.UpdatedAt = DateTimeOffset.UtcNow;
         _unitOfWork.ChatRooms.Update(chatRoom);
 
-var unreadKey = $"unread:{chatRoom.Id}:{recipientId}";
+        var unreadKey = $"unread:{chatRoom.Id}:{recipientId}";
         await _redisService.IncrementAsync(unreadKey);
 
-await _notificationDispatcher.SendAsync(
-            recipientId,
-            recipientType,
-            "new_message",
-            request.Content.Length > 50 ? request.Content[..47] + "..." : request.Content,
-            chatRoom.Id);
+        await _notificationDispatcher.SendAsync(
+                    recipientId,
+                    recipientType,
+                    "new_message",
+                    request.Content.Length > 50 ? request.Content[..47] + "..." : request.Content,
+                    chatRoom.Id);
 
         return new MessageResponse(
             message.Id,

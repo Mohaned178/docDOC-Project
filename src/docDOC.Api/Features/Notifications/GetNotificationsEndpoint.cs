@@ -23,6 +23,10 @@ public class GetNotificationsEndpoint : Endpoint<GetNotificationsRequest, Notifi
     public override void Configure()
     {
         Get("api/notifications");
+        Summary(s => {
+            s.Summary = "Get user notifications";
+            s.Description = "Retrieves a paginated list of notifications for the current user.";
+        });
     }
 
     public override async Task HandleAsync(GetNotificationsRequest req, CancellationToken ct)

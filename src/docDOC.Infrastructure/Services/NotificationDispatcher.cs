@@ -31,7 +31,7 @@ public sealed class NotificationDispatcher : INotificationDispatcher
     {
         _logger.LogInformation("Dispatching notification {EventType} to user {UserId}", eventType, userId);
 
-var notification = new Notification
+        var notification = new Notification
         {
             UserId = userId,
             UserType = userType,
@@ -43,11 +43,11 @@ var notification = new Notification
         };
 
         await _unitOfWork.Notifications.AddAsync(notification);
-        await _unitOfWork.SaveChangesAsync(); 
+        await _unitOfWork.SaveChangesAsync();
 
-var isOnline = await _redisService.ExistsAsync($"online:{userId}");
+        var isOnline = await _redisService.ExistsAsync($"online:{userId}");
 
-if (isOnline)
+        if (isOnline)
         {
             await _hubContext.Clients.Group(userId.ToString())
                 .SendAsync("OnNotification", new
@@ -58,7 +58,7 @@ if (isOnline)
                     notification.ReferenceId,
                     notification.CreatedAt
                 });
-            
+
             _logger.LogInformation("Notification pushed to SignalR group for user {UserId}", userId);
         }
         else

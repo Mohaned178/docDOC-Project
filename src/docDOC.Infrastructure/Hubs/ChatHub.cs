@@ -1,6 +1,5 @@
 using docDOC.Application.Features.Chat.Commands;
 using docDOC.Application.Interfaces;
-using docDOC.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;

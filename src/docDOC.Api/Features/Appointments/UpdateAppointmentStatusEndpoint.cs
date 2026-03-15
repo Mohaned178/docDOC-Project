@@ -23,6 +23,10 @@ public class UpdateAppointmentStatusEndpoint : Endpoint<UpdateAppointmentStatusR
     public override void Configure()
     {
         Patch("api/appointments/{id}/status");
+        Summary(s => {
+            s.Summary = "Update appointment status";
+            s.Description = "Allows a doctor to update the status of an appointment.";
+        });
     }
 
     public override async Task HandleAsync(UpdateAppointmentStatusRequest req, CancellationToken ct)

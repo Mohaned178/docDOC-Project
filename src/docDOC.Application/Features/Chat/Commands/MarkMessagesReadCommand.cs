@@ -36,14 +36,14 @@ public sealed class MarkMessagesReadCommandHandler : IRequestHandler<MarkMessage
         var chatRoom = await _unitOfWork.ChatRooms.GetByIdAsync(request.ChatRoomId, cancellationToken)
             ?? throw new NotFoundException("Chat room not found");
 
-if (chatRoom.PatientId != userId && chatRoom.DoctorId != userId)
+        if (chatRoom.PatientId != userId && chatRoom.DoctorId != userId)
         {
             throw new ForbiddenException("You are not a participant in this chat room.");
         }
 
-await _unitOfWork.Messages.MarkAsReadAsync(chatRoom.Id, userId, cancellationToken);
+        await _unitOfWork.Messages.MarkAsReadAsync(chatRoom.Id, userId, cancellationToken);
 
-var unreadKey = $"unread:{chatRoom.Id}:{userId}";
+        var unreadKey = $"unread:{chatRoom.Id}:{userId}";
         await _redisService.RemoveAsync(unreadKey);
 
         _logger.LogInformation("Successfully marked messages as read in room {RoomId}", request.ChatRoomId);

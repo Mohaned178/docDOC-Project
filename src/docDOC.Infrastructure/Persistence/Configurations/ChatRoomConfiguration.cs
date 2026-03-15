@@ -11,7 +11,7 @@ public class ChatRoomConfiguration : IEntityTypeConfiguration<ChatRoom>
         builder.ToTable("ChatRooms");
         builder.HasKey(c => c.Id);
         builder.Property(c => c.IsActive).HasDefaultValue(true);
-        
+
         builder.HasOne(c => c.Patient)
                .WithMany()
                .HasForeignKey(c => c.PatientId)
@@ -21,7 +21,7 @@ public class ChatRoomConfiguration : IEntityTypeConfiguration<ChatRoom>
                .WithMany()
                .HasForeignKey(c => c.DoctorId)
                .OnDelete(DeleteBehavior.Restrict);
-               
+
         builder.HasIndex(c => new { c.PatientId, c.DoctorId }).IsUnique();
         builder.HasIndex(c => c.UpdatedAt);
     }

@@ -11,7 +11,7 @@ public class ReviewConfiguration : IEntityTypeConfiguration<Review>
         builder.ToTable("Reviews");
         builder.HasKey(r => r.Id);
         builder.Property(r => r.Comment).HasMaxLength(1000);
-        
+
         builder.HasOne(r => r.Appointment)
                .WithOne()
                .HasForeignKey<Review>(r => r.AppointmentId)
@@ -26,7 +26,7 @@ public class ReviewConfiguration : IEntityTypeConfiguration<Review>
                .WithMany()
                .HasForeignKey(r => r.DoctorId)
                .OnDelete(DeleteBehavior.Restrict);
-               
+
         builder.HasIndex(r => r.AppointmentId).IsUnique();
         builder.HasIndex(r => new { r.DoctorId, r.CreatedAt });
     }

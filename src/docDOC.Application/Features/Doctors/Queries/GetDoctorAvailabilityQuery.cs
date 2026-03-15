@@ -1,10 +1,6 @@
 using docDOC.Domain.Exceptions;
 using docDOC.Domain.Interfaces;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace docDOC.Application.Features.Doctors.Queries;
 

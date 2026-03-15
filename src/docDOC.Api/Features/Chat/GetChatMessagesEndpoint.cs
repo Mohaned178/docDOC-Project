@@ -23,6 +23,10 @@ public class GetChatMessagesEndpoint : Endpoint<GetChatMessagesRequest, ChatMess
     public override void Configure()
     {
         Get("api/chat/{id}/messages");
+        Summary(s => {
+            s.Summary = "Get chat messages";
+            s.Description = "Retrieves a paginated list of messages for a specific chat room.";
+        });
     }
 
     public override async Task HandleAsync(GetChatMessagesRequest req, CancellationToken ct)

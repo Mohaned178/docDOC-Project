@@ -1,7 +1,7 @@
-using docDOC.Domain.Interfaces;
 using docDOC.Application.Interfaces;
-using MediatR;
 using docDOC.Domain.Exceptions;
+using docDOC.Domain.Interfaces;
+using MediatR;
 
 namespace docDOC.Application.Features.Auth.Commands;
 
@@ -28,7 +28,7 @@ public class LogoutUserCommandHandler : IRequestHandler<LogoutUserCommand, bool>
 
         await _unitOfWork.RefreshTokens.RevokeAllForUserAsync(userId, cancellationToken);
 
-await _redisService.SetAsync($"blacklist:{jti}", "true", TimeSpan.FromMinutes(15));
+        await _redisService.SetAsync($"blacklist:{jti}", "true", TimeSpan.FromMinutes(15));
 
         return true;
     }

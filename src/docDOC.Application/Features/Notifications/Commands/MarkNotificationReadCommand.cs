@@ -34,7 +34,7 @@ public sealed class MarkNotificationReadCommandHandler : IRequestHandler<MarkNot
 
         if (notification.UserId != userId)
         {
-            _logger.LogWarning("Forbidden: User {UserId} attempted to mark notification {Id} of User {OwnerId} as read", 
+            _logger.LogWarning("Forbidden: User {UserId} attempted to mark notification {Id} of User {OwnerId} as read",
                 userId, request.Id, notification.UserId);
             throw new ForbiddenException("You can only mark your own notifications as read.");
         }
@@ -42,6 +42,6 @@ public sealed class MarkNotificationReadCommandHandler : IRequestHandler<MarkNot
         notification.IsRead = true;
         _unitOfWork.Notifications.Update(notification);
 
-_logger.LogInformation("Notification {Id} marked as read", request.Id);
+        _logger.LogInformation("Notification {Id} marked as read", request.Id);
     }
 }

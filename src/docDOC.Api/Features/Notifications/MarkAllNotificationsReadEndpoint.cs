@@ -16,6 +16,10 @@ public class MarkAllNotificationsReadEndpoint : EndpointWithoutRequest
     public override void Configure()
     {
         Put("api/notifications/read-all");
+        Summary(s => {
+            s.Summary = "Mark all as read";
+            s.Description = "Marks all notifications for the current user as read.";
+        });
     }
 
     public override async Task HandleAsync(CancellationToken ct)

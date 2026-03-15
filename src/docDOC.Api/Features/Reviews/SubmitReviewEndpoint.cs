@@ -17,12 +17,16 @@ public class SubmitReviewEndpoint : Endpoint<SubmitReviewCommand, SubmitReviewRe
     {
         Post("api/reviews");
         Roles("Patient");
+        Summary(s => {
+            s.Summary = "Submit doctor review";
+            s.Description = "Allows a patient to submit a rating and review for a doctor.";
+        });
     }
 
     public override async Task HandleAsync(SubmitReviewCommand req, CancellationToken ct)
     {
         var result = await _mediator.Send(req, ct);
         await Send.CreatedAtAsync<SubmitReviewEndpoint>(new { }, result, cancellation: ct);
- // Actually just sending 201 Created is fine
+        
     }
 }

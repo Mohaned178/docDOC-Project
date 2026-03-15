@@ -1,7 +1,7 @@
 using docDOC.Domain.Entities;
 using docDOC.Domain.Enums;
-using docDOC.Domain.Interfaces;
 using docDOC.Domain.Exceptions;
+using docDOC.Domain.Interfaces;
 using MediatR;
 using NetTopologySuite.Geometries;
 

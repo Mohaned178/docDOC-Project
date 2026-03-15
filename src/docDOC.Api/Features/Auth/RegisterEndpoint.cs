@@ -17,12 +17,16 @@ public class RegisterEndpoint : Endpoint<RegisterUserCommand, object>
     {
         Post("api/auth/register");
         AllowAnonymous();
+        Summary(s => {
+            s.Summary = "User registration";
+            s.Description = "Registers a new patient or doctor in the system.";
+        });
     }
 
     public override async Task HandleAsync(RegisterUserCommand req, CancellationToken ct)
     {
         var result = await _mediator.Send(req, ct);
-        // Created without URL
+        
         await HttpContext.Response.SendAsync(result, 201, cancellation: ct);
 
 

@@ -1,5 +1,5 @@
-using FluentValidation;
 using docDOC.Application.Features.Reviews.Commands;
+using FluentValidation;
 
 namespace docDOC.Application.Features.Reviews.Validators;
 

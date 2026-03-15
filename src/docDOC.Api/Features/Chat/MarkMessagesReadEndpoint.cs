@@ -21,6 +21,10 @@ public class MarkMessagesReadEndpoint : Endpoint<MarkMessagesReadRequest>
     public override void Configure()
     {
         Put("api/chat/{id}/messages/read");
+        Summary(s => {
+            s.Summary = "Mark messages as read";
+            s.Description = "Marks all messages in a chat room as read by the current user.";
+        });
     }
 
     public override async Task HandleAsync(MarkMessagesReadRequest req, CancellationToken ct)

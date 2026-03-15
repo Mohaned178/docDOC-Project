@@ -1,8 +1,8 @@
+using docDOC.Application.Interfaces;
 using docDOC.Domain.Entities;
 using docDOC.Domain.Enums;
-using docDOC.Domain.Interfaces;
 using docDOC.Domain.Exceptions;
-using docDOC.Application.Interfaces;
+using docDOC.Domain.Interfaces;
 using MediatR;
 using System.Security.Cryptography;
 
@@ -29,10 +29,10 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, A
         if (existingToken == null || existingToken.IsRevoked || existingToken.ExpiresAt <= DateTimeOffset.UtcNow)
             throw new UnauthorizedException("Invalid or expired refresh token");
 
-existingToken.IsRevoked = true;
+        existingToken.IsRevoked = true;
         _unitOfWork.RefreshTokens.Update(existingToken);
 
-string email;
+        string email;
         string firstName;
         string lastName;
         string roleStr = existingToken.UserType.ToString();
@@ -72,7 +72,7 @@ string email;
 
         await _unitOfWork.RefreshTokens.AddAsync(newRefreshTokenEntity, cancellationToken);
 
-var authUser = new AuthUserDto(existingToken.UserId, firstName, lastName, email, roleStr);
+        var authUser = new AuthUserDto(existingToken.UserId, firstName, lastName, email, roleStr);
         return new AuthResultDto(accessToken, newRawRefreshToken, 15 * 60, authUser);
     }
 

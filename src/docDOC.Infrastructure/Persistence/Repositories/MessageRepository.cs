@@ -39,7 +39,7 @@ public class MessageRepository : BaseRepository<Message>, IMessageRepository
     public async Task MarkAsReadAsync(int roomId, int recipientId, CancellationToken cancellationToken = default)
     {
 
-await _dbSet.Where(m => m.ChatRoomId == roomId && m.SenderId != recipientId && m.Status != docDOC.Domain.Enums.MessageStatus.Read)
-                    .ExecuteUpdateAsync(s => s.SetProperty(m => m.Status, docDOC.Domain.Enums.MessageStatus.Read), cancellationToken);
+        await _dbSet.Where(m => m.ChatRoomId == roomId && m.SenderId != recipientId && m.Status != docDOC.Domain.Enums.MessageStatus.Read)
+                            .ExecuteUpdateAsync(s => s.SetProperty(m => m.Status, docDOC.Domain.Enums.MessageStatus.Read), cancellationToken);
     }
 }

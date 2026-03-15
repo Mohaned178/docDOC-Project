@@ -1,8 +1,8 @@
+using docDOC.Application.Interfaces;
 using docDOC.Domain.Entities;
 using docDOC.Domain.Enums;
 using docDOC.Domain.Exceptions;
 using docDOC.Domain.Interfaces;
-using docDOC.Application.Interfaces;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -46,7 +46,7 @@ public sealed class SubmitReviewCommandHandler : IRequestHandler<SubmitReviewCom
         var currentUserId = _currentUserService.UserId;
         if (appointment.PatientId != currentUserId)
         {
-            _logger.LogWarning("User {UserId} attempted to review appointment {AppointmentId} belonging to patient {PatientId}", 
+            _logger.LogWarning("User {UserId} attempted to review appointment {AppointmentId} belonging to patient {PatientId}",
                 currentUserId, request.AppointmentId, appointment.PatientId);
             throw new ForbiddenException("You can only review your own appointments.");
         }
@@ -72,16 +72,16 @@ public sealed class SubmitReviewCommandHandler : IRequestHandler<SubmitReviewCom
             DoctorId = appointment.DoctorId
         };
 
-decimal currentAvg = doctor.AverageRating;
+        decimal currentAvg = doctor.AverageRating;
         int currentCount = doctor.TotalReviews;
-        
+
         doctor.AverageRating = ((currentAvg * (decimal)currentCount) + (decimal)request.Rating) / (decimal)(currentCount + 1);
         doctor.TotalReviews++;
 
         await _uow.Reviews.AddAsync(review, cancellationToken);
         _uow.Doctors.Update(doctor);
 
-await _redisService.RemoveAsync($"doctor:cache:{doctor.Id}");
+        await _redisService.RemoveAsync($"doctor:cache:{doctor.Id}");
 
         return new SubmitReviewResponse(
             review.Id, review.AppointmentId, review.DoctorId,

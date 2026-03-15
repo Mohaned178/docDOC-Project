@@ -2,7 +2,6 @@ using docDOC.Application.Interfaces;
 using docDOC.Domain.Enums;
 using docDOC.Domain.Interfaces;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 
 namespace docDOC.Infrastructure.Services.HangfireJobs;
 
@@ -46,7 +45,7 @@ public class AppointmentReminderJob
             "appointment_reminder",
             $"Reminder: Your appointment is scheduled for {appointment.Date} at {appointment.Time}.",
             appointment.Id);
-        
+
         await _notificationDispatcher.SendAsync(
             appointment.DoctorId,
             UserType.Doctor,

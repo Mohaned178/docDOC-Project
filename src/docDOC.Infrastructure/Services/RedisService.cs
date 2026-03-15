@@ -1,5 +1,5 @@
-using StackExchange.Redis;
 using docDOC.Application.Interfaces;
+using StackExchange.Redis;
 
 namespace docDOC.Infrastructure.Services;
 

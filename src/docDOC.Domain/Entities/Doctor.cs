@@ -1,4 +1,3 @@
-using docDOC.Domain.Enums;
 using NetTopologySuite.Geometries;
 
 namespace docDOC.Domain.Entities;

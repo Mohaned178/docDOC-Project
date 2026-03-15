@@ -17,6 +17,10 @@ public class LoginEndpoint : Endpoint<LoginUserCommand, object>
     {
         Post("api/auth/login");
         AllowAnonymous();
+        Summary(s => {
+            s.Summary = "User login";
+            s.Description = "Authenticates a user and returns a JWT token.";
+        });
     }
 
     public override async Task HandleAsync(LoginUserCommand req, CancellationToken ct)
